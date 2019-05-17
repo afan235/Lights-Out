@@ -1,0 +1,68 @@
+#Welcome
+print('Welcome to Lights Out!')
+
+#Starting the game
+# Randomly place the lights either turned on, dim, or turned off
+import random
+def get_lights(count):
+    return [random.choice(['*','O']) for i in range(count)]
+
+
+# Ask user to how many lights they want 
+def getCount():
+    while True:
+        try:
+            count=int(input('How many lights would you like to have? '))
+            return count
+        except:print('Invalid number')
+
+# Get user the index of the light he wants to toggle
+def getLightToToggle(count):
+    while True:
+        try:
+            index=int(input('Which light do you want to toggle (0 to quit)?  '))
+            if 0<=index and index<=count:return index
+            else:print('Index out of range')
+        except:print('Invalid number')
+
+# Toggle the light and its neighbours
+def toggleLights(index,lights):
+    if lights[index - 1] == '*': lights[index - 1] = 'O'
+    else:lights[index - 1] = '*'
+
+    if index ==1:
+        if lights[1] == '*': lights[1] = 'O'
+        else: lights[1] = '*'
+    elif index==len(lights):
+        if lights[index-2] == '*': lights[index-2] = 'O'
+        else: lights[index-2] = '*'
+    else:
+        if lights[index-2]=='*':lights[index-2]='O'
+        else:lights[index-2]='*'
+        if lights[index]=='*':lights[index]='O'
+        else:lights[index]='*'
+
+
+
+def main():
+    count = getCount()
+    lights = get_lights(count)
+# Prints the lights, checks if there are any turned off lights
+# If there are no lights turned on, you win
+    while True:
+        print('Lights: {}'.format(' '.join(lights))) 
+        if '*' not in lights: 
+            print('Congratulations! You win!') 
+            break
+# Get the index of the light to toggle
+        index = getLightToToggle(count)
+# Break out if 0 is pressed
+# Toggle the lights
+        if index==0: 
+            if '*' in lights:
+                print('OK, sorry it didn\'t work out!')
+                break
+        else:
+            toggleLights(index,lights) 
+
+main()
